@@ -26,7 +26,7 @@ SQuAD数据集中的样本是以(P,Q,A)的形式给出的，其中P(paragraph)�
 
 具体流程如下图所示：
 
-![image-20181110134741368](/Users/haochenshi/Library/Application Support/typora-user-images/image-20181110134741368.png)
+![image-20181110134741368](resources/image-20181110134741368.png)
 
 
 
@@ -45,7 +45,7 @@ SQuAD数据集中的样本是以(P,Q,A)的形式给出的，其中P(paragraph)�
 
 结果如下：
 
-![image-20181110145201513](/Users/haochenshi/Library/Application Support/typora-user-images/image-20181110145201513.png)
+![image-20181110145201513](resources/image-20181110145201513.png)
 
 
 
@@ -85,14 +85,14 @@ Language Modeling是通过在未标注的大量语料上根据上下文来预测
 
 为验证这一想法，我使用在百科上使用Skip-Gram with Negative Sampling训练得到的300纬词向量进行了如下测试：
 
-![image-20181110155319687](/Users/haochenshi/Library/Application Support/typora-user-images/image-20181110155319687.png)
+![image-20181110155319687](resources/image-20181110155319687.png)
 
 可以看到，仅从词向量的余弦相似度和曼哈顿距离上很难区分'好'、'坏'和'很好',甚至'good'和'bad'的相似度达到了0.82.
 由于这些具有相反语意的词汇在特征空间中的表示很接近，因此若仅将文本中的good替换为bad,那么文本在特征空间中的表示也会很接近，而若要训练模型能够正确区分文本的语意是positive的还是negative的，就需要模型能够发现并利用这些反义词在特征空间中某些维度上较小的差异，从而模型就会对这些纬度较为敏感，那么模型就会缺乏对这些纬度上的扰动的鲁棒性。
 
 
 
-### Point 2：x2
+### Point 2：
 
 值得注意的一点是，第2篇文章中构造adversarial examples的方式是使用在特征空间中距离较小且语意相近的词汇来代替原词汇作为扰动。即，与第一篇文章恰好相反，第2篇文章在试图说明现有的NLP领域中的模型对与原文语意信息***<u>相同</u>*** 的扰动<u>***十分敏感***</u>。
 
@@ -100,13 +100,13 @@ adversarial training能够在CV领域work, 而在NLP难以work的原因有可能
 
 由于自然语言的离散型，我们难以在语意空间中某一点的周围充分采样，从而导致模型的Loss在训练样本处往往都是一些比较sharp的点：
 
-![image-20181110160920737](/Users/haochenshi/Library/Application Support/typora-user-images/image-20181110160920737.png)
+![image-20181110160920737](resources/image-20181110160920737.png)
 
 如上图所示，突出的尖点是在训练集中出现的样本，模型能够正确处理训练集中出现过的点，却无法有效处理在语意空间中表示相近，却未在训练集中出现过的样本（文章2中的adversarial examples)。
 
 在CV领域能够通过梯度的方式较为方便且较为充足得对语意空间中接近的点进行采样，再将这些点作为data augmentation训练模型来缓解aversarial attack, 然而在NLP领域很难对语意空间中接近的点进行较为充分的采样，使得其在很多点上依旧十分sharp,因此文章1、2中的结果显示adversarial training未能有效提升模型的鲁棒性:
 
-![image-20181110162731436](/Users/haochenshi/Library/Application Support/typora-user-images/image-20181110162731436.png)
+![image-20181110162731436](resources/image-20181110162731436.png)
 
 
 
